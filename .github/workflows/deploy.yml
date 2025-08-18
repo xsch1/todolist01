@@ -2,8 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ['main'] # main 브랜치에 push될 때 실행
-  workflow_dispatch: # 수동 실행도 가능
+    branches: ['main'] # main에 푸시 시 동작함
+  workflow_dispatch: # 수동 실행 허용함
 
 permissions:
   contents: read
@@ -17,7 +17,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -27,12 +26,16 @@ jobs:
         with:
           node-version: 22.18.0
           cache: npm
+          cache-dependency-path: package-lock.json # 루트의 lock 파일 사용함
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci # lock 파일과 동기화 필요함
 
       - name: Build project
-        run: npm run build
+        run: |
+          npm run build
+          # SPA 새로고침 404 방지
+          cp dist/index.html dist/404.html
 
       - name: Upload production-ready build files
         uses: actions/upload-pages-artifact@v3
