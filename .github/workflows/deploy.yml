@@ -2,8 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ['main'] # main에 푸시 시 동작함
-  workflow_dispatch: # 수동 실행 허용함
+    branches: ['main']
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -21,15 +21,25 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
+      # Node 18 LTS로 안정화함
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22.18.0
           cache: npm
-          cache-dependency-path: package-lock.json # 루트의 lock 파일 사용함
+          cache-dependency-path: package-lock.json
 
+      # 경로/파일 확인(디버그)
+      - name: Show tree
+        run: |
+          pwd
+          ls -la
+          test -f package.json && echo "HAS package.json"
+          test -f package-lock.json && echo "HAS package-lock.json"
+
+      # npm ci 대신 npm install 사용함 (lock 불일치 이슈 회피)
       - name: Install dependencies
-        run: npm ci # lock 파일과 동기화 필요함
+        run: npm install
 
       - name: Build project
         run: |
