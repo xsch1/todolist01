@@ -1,19 +1,22 @@
-// TodoList.jsx
 import TodoItem from './TodoItem';
-import style from './TodoList.module.css';
-// import "../css/TodoList.module.css";
-// 주의!!!!!
-// 파일명은 모듈이나 import할 때 모듈로 가져오지 않으면 전역으로 인식됨(로컬).
-// 그래서 하위 item 컴포넌트에도 li 스타일이 반영된겁니다.
-// 배포하면 안먹음
+import styles from './TodoList.module.css';
 
-const TodoList = ({ todos, updateTodo, toggleComplete, deleteTodo }) => {
+export default function TodoList({
+  todos,
+  updateTodo,
+  toggleComplete,
+  deleteTodo,
+}) {
+  if (!todos.length) {
+    return <p className={styles.empty}>할 일이 비어 있어요.</p>;
+  }
+
   return (
-    <ul className={style.ul}>
-      {todos.map((todo) => (
+    <ul className={styles.list}>
+      {todos.map((t) => (
         <TodoItem
-          key={todo.id}
-          todo={todo}
+          key={t.id}
+          todo={t}
           updateTodo={updateTodo}
           toggleComplete={toggleComplete}
           deleteTodo={deleteTodo}
@@ -21,6 +24,4 @@ const TodoList = ({ todos, updateTodo, toggleComplete, deleteTodo }) => {
       ))}
     </ul>
   );
-};
-
-export default TodoList;
+}

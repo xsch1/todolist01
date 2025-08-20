@@ -1,15 +1,35 @@
-.container {
-  width: 100%;
+.form {
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  margin-bottom: 16px;
 }
-.todoInput {
-  height: 40px;
-  border-radius: 8px;
-  padding: 8px 12px;
+
+.input {
   flex: 1;
-  border: 1px solid #ddd;
+  padding: 10px 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  outline: none;
 }
-.primaryColor {
-  color: #747bff;
+
+.input:focus {
+  border-color: #1677ff;
+  box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.12);
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background: #1677ff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  filter: brightness(0.95);
 }

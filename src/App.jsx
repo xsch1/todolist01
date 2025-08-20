@@ -1,4 +1,3 @@
-// App.jsx
 import { useState, useEffect } from 'react';
 import TodoInput from './TodoInput';
 import TodoList from './TodoList';
@@ -16,42 +15,45 @@ function App() {
     localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
 
-  // C: 추가함
+  // C: 추가
   const addTodo = (text) => {
-    setTodos([...todos, { id: Date.now(), text, completed: false }]);
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    setTodos((prev) => [
+      ...prev,
+      { id: Date.now(), text: trimmed, completed: false },
+    ]);
   };
 
-  // U: 텍스트 수정함
+  // U: 텍스트 수정
   const updateTodo = (id, updatedText) => {
-    setTodos(
-      todos.map((todo) =>
+    setTodos((prev) =>
+      prev.map((todo) =>
         todo.id === id ? { ...todo, text: updatedText } : todo
       )
     );
   };
 
-  // U: 완료 토글함
+  // U: 완료 토글
   const toggleComplete = (id) => {
-    setTodos(
-      todos.map((todo) =>
+    setTodos((prev) =>
+      prev.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
   };
 
-  // D: 삭제함
+  // D: 삭제
   const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
 
-  // ✅ 추가 기능: 남은 할 일 개수 계산함
   const remainingCount = todos.filter((t) => !t.completed).length;
 
   return (
     <div className={styles.app}>
       <h1>To Do List</h1>
 
-      {/* ✅ 남은 할 일/전체 개수 표시 */}
       <div className={styles.summary}>
         남은 할 일: <strong>{remainingCount}</strong>개 / 전체: {todos.length}개
       </div>
